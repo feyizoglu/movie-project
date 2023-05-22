@@ -1,11 +1,31 @@
-#movie-backdrop {
-    width: 100%;
+.dropdown:hover .dropdown-menu {
+  display: block;
 }
-
+.logo {
+  height: 40px;
+  width: 120px;
+}
+body {
+  background: url(./img/bg.jpg) center center/cover no-repeat;
+  height: 100vh;
+  position: relative;
+}
 .container {
-    padding-top: 32px;
+  height: 100%;
 }
-
-#actors {
-    margin: 24px 16px 0 0;
+.movies {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+.movies img {
+  height: 200px;
+  width: 300px;
+}
+.movies-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
