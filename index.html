@@ -1,18 +1,115 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Movie</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
+      <header class="h-20">
+        <nav class="relative px-2 py-4">
+          <div class="container mx-auto flex justify-between items-center">
+            <img
+              class="logo"
+              src="./img/logo.png"
+              alt="Tailwindcss Navigation"
+            />
+
+            <ul class="hidden md:flex space-x-10 font-semibold text-white">
+              <li class="text-center"><a href="#">Home</a></li>
+              <li><a href="#">Movies</a></li>
+              <li><a href="#">Actors</a></li>
+              <li>
+                <div>
+                  <div class="dropdown inline-block relative">
+                    <button class="font-semibold inline-flex items-center">
+                      <span class="mr-1">Genre</span>
+                      <svg
+                        class="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                        />
+                      </svg>
+                    </button>
+                    <ul class="dropdown-menu absolute hidden text-black pt-1">
+                      <li class="">
+                        <a
+                          class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+                          href="#"
+                          >One</a
+                        >
+                      </li>
+                      <li class="">
+                        <a
+                          class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+                          href="#"
+                          >Two</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <div>
+                <div class="dropdown inline-block relative">
+                  <button class="font-semibold inline-flex items-center">
+                    <span class="mr-1">Filter</span>
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                    </svg>
+                  </button>
+                  <ul class="dropdown-menu absolute hidden pt-1">
+                    <li class="">
+                      <a
+                        class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+                        href="#"
+                        >One</a
+                      >
+                    </li>
+                    <li class="">
+                      <a
+                        class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+                        href="#"
+                        >Two</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </ul>
+
+            <form id="form">
+              <input
+                class="h-[21px] w-[150px] p-1 mr-3 rounded"
+                type="text"
+                placeholder="search"
+                id="search"
+              />
+            </form>
+
+            <!-- Mobile menu icon -->
+            <button id="mobile-icon" class="md:hidden">
+              <i onclick="changeIcon(this)" class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </nav>
+      </header>
+      <div class="movies-container"></div>
     </div>
     <script type="text/javascript" src="script.js"></script>
-</body>
-
+  </body>
 </html>
