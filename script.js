@@ -25,7 +25,8 @@ const constructUrl = (path) => {
 const movieDetails = async (movie, actors) => {
   const movieRes = await fetchMovie(movie.id);
   const actorRes = await fetchActors(actors);
-  renderMovie(movieRes, actorRes);
+  const similarMov = await fetchSimilars(movie.id);
+  renderMovie(movieRes, actorRes, similarMov);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -41,11 +42,21 @@ const fetchMovie = async (movieId) => {
   const res = await fetch(url);
   return res.json();
 };
+
+//Fetching one movie's actors
 const fetchActors = async (movieId) => {
   const url = constructUrl(`movie/${movieId}/credits`);
   const res = await fetch(url);
   const act = await res.json();
   return act.cast;
+};
+
+//Fetching Similar Movies
+const fetchSimilars = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/similar`);
+  const res = await fetch(url);
+  const sim = await res.json();
+  return sim;
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
@@ -59,15 +70,17 @@ const renderMovies = (movies) => {
     } poster">
         <h3>${movie.title}</h3>`;
     movieDiv.addEventListener("click", () => {
-      movieDetails(movie, movie.id);
+      movieDetails(movie, movie.id, movie.id);
+      // console.log(movie.id);
     });
     moviesContainer.appendChild(movieDiv);
   });
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie, actors) => {
+const renderMovie = (movie, actors, similarMov) => {
   console.log(actors);
+  console.log(similarMov);
   CONTAINER.innerHTML = `
     <div class="row text-white">
         <div class="col-md-4 flex items-center justify-center mt-5">
@@ -79,14 +92,15 @@ const renderMovie = (movie, actors) => {
             <h2 id="movie-title">${movie.title}</h2>
             <p id="movie-release-date"><b>Release Date:</b> ${
               movie.release_date
-            }</p>
+            }
+            </p>
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
             <h3 class="mt-3 mb-3">Overview:</h3>
             <p id="movie-overview" class="m-auto max-w-5xl">${
               movie.overview
             }</p>
         </div>
-        <div >
+        <div>
             <h3 class="text-center mb-5" >Actors</h3>
             <ul id="actors" class="list-unstyled flex items-center justify-center w-full">
             <li>
@@ -117,7 +131,17 @@ const renderMovie = (movie, actors) => {
             <li>${actors[4].name}</li>
             </ul>
             </div>
-    </div>`;
+    </div>
+    
+  <div>
+  <ul>
+    <li>${similarMov.results[0].title}</li>
+    <li>${similarMov.results[1].title}</li>
+    <li>${similarMov.results[2].title}</li>
+    <li>${similarMov.results[3].title}</li>
+    <li>${similarMov.results[4].title}</li>
+  </ul>
+  </div>`;
 };
 
 // ${PROFILE_BASE_URL}/${actors[0].profile_path}
