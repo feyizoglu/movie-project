@@ -9,7 +9,7 @@ const CONTAINER = document.querySelector(".container");
 const moviesContainer = document.querySelector(".movies-container");
 const form = document.getElementById("form");
 const search = document.getElementById("search");
-
+const genreList = document.querySelector("#genreList");
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
@@ -25,8 +25,7 @@ const constructUrl = (path) => {
 const movieDetails = async (movie, actors) => {
   const movieRes = await fetchMovie(movie.id);
   const actorRes = await fetchActors(actors);
-  const similarMov = await fetchSimilars(movie.id);
-  renderMovie(movieRes, actorRes, similarMov);
+  renderMovie(movieRes, actorRes);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -42,8 +41,6 @@ const fetchMovie = async (movieId) => {
   const res = await fetch(url);
   return res.json();
 };
-
-//Fetching one movie's actors
 const fetchActors = async (movieId) => {
   const url = constructUrl(`movie/${movieId}/credits`);
   const res = await fetch(url);
@@ -51,36 +48,71 @@ const fetchActors = async (movieId) => {
   return act.cast;
 };
 
-//Fetching Similar Movies
-const fetchSimilars = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}/similar`);
+const fetchGenre = async () => {
+  const url = constructUrl(`genre/movie/list`);
   const res = await fetch(url);
-  const sim = await res.json();
-  return sim;
+  const gen = await res.json();
+  // console.log(gen.genres[0].name);
+  return gen.genres;
+};
+const renderGenre = (genres) => {
+  Object.values(genres).map((genre) => {
+    const genreDiv = document.createElement("li");
+    genreDiv.classList.add("genreContainer");
+    genreDiv.innerHTML = `
+    <a
+    class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+    href="#"
+    >${genre.name}</a
+  >
+    `;
+    genreDiv.addEventListener("click", () => {
+      renderGenres();
+    });
+    genreList.appendChild(genreDiv);
+  });
+};
+const genreRun = async () => {
+  const genres = await fetchGenre();
+  renderGenre(genres);
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  let id = 1;
+
   Object.values(movies).map((movie) => {
     const movieDiv = document.createElement("div");
     movieDiv.classList.add("movies");
+    movieDiv.id = id;
+    id++;
     movieDiv.innerHTML = `
         <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
         <h3>${movie.title}</h3>`;
     movieDiv.addEventListener("click", () => {
-      movieDetails(movie, movie.id, movie.id);
-      // console.log(movie.id);
+      movieDetails(movie, movie.id);
     });
     moviesContainer.appendChild(movieDiv);
   });
 };
+const renderGenres = (genres) => {
+  for (let i = 1; i < 21; i++) {
+    const genreId = document.getElementById(i);
+    //     genreId.innerHTML = `
+    // <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
+    //       movie.title
+    //     } poster">
+    //         <h3>${movie.title}</h3>
+    //     `;
+    console.log(genreId);
+  }
+};
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie, actors, similarMov) => {
-  console.log(actors);
-  console.log(similarMov);
+const renderMovie = (movie, actors) => {
+  console.log(movie);
   CONTAINER.innerHTML = `
     <div class="row text-white">
         <div class="col-md-4 flex items-center justify-center mt-5">
@@ -92,15 +124,14 @@ const renderMovie = (movie, actors, similarMov) => {
             <h2 id="movie-title">${movie.title}</h2>
             <p id="movie-release-date"><b>Release Date:</b> ${
               movie.release_date
-            }
-            </p>
+            }</p>
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
             <h3 class="mt-3 mb-3">Overview:</h3>
             <p id="movie-overview" class="m-auto max-w-5xl">${
               movie.overview
             }</p>
         </div>
-        <div>
+        <div >
             <h3 class="text-center mb-5" >Actors</h3>
             <ul id="actors" class="list-unstyled flex items-center justify-center w-full">
             <li>
@@ -131,17 +162,7 @@ const renderMovie = (movie, actors, similarMov) => {
             <li>${actors[4].name}</li>
             </ul>
             </div>
-    </div>
-    
-  <div>
-  <ul>
-    <li>${similarMov.results[0].title}</li>
-    <li>${similarMov.results[1].title}</li>
-    <li>${similarMov.results[2].title}</li>
-    <li>${similarMov.results[3].title}</li>
-    <li>${similarMov.results[4].title}</li>
-  </ul>
-  </div>`;
+    </div>`;
 };
 
 // ${PROFILE_BASE_URL}/${actors[0].profile_path}
@@ -156,3 +177,4 @@ const renderMovie = (movie, actors, similarMov) => {
 // });
 
 document.addEventListener("DOMContentLoaded", autorun);
+document.addEventListener("DOMContentLoaded", genreRun);

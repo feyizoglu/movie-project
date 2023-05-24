@@ -3,64 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>GTGH</title>
   </head>
 
   <body>
-    <div class="container">
-      <header class="h-20">
-        <nav class="relative px-2 py-4">
-          <div class="container mx-auto flex justify-between items-center">
-            <img
-              class="logo"
-              src="./img/logo.png"
-              alt="Tailwindcss Navigation"
-            />
+    <header class="h-20">
+      <nav class="relative px-2 py-4">
+        <div class="mx-auto flex justify-between items-center">
+          <img class="logo" src="./img/logo.png" alt="Tailwindcss Navigation" />
 
-            <ul class="hidden md:flex space-x-10 font-semibold text-white">
-              <li class="text-center"><a href="#">Home</a></li>
-              <li><a href="#">Actors</a></li>
-              <li>
-                <div>
-                  <div class="dropdown inline-block relative">
-                    <button class="font-semibold inline-flex items-center">
-                      <span class="mr-1">Genre</span>
-                      <svg
-                        class="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                        />
-                      </svg>
-                    </button>
-                    <ul class="dropdown-menu absolute hidden text-black pt-1">
-                      <li class="">
-                        <a
-                          class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
-                          href="#"
-                          >One</a
-                        >
-                      </li>
-                      <li class="">
-                        <a
-                          class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
-                          href="#"
-                          >Two</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
+          <ul class="hidden md:flex space-x-10 font-semibold text-white">
+            <li class="text-center"><a href="#">Home</a></li>
+            <li><a href="#">Actors</a></li>
+            <li>
               <div>
                 <div class="dropdown inline-block relative">
                   <button class="font-semibold inline-flex items-center">
-                    <span class="mr-1">Filter</span>
+                    <span class="mr-1">Genre</span>
                     <svg
                       class="fill-current h-4 w-4"
                       xmlns="http://www.w3.org/2000/svg"
@@ -71,42 +38,67 @@
                       />
                     </svg>
                   </button>
-                  <ul class="dropdown-menu absolute hidden pt-1">
-                    <li class="">
-                      <a
-                        class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
-                        href="#"
-                        >One</a
-                      >
-                    </li>
-                    <li class="">
-                      <a
-                        class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
-                        href="#"
-                        >Two</a
-                      >
-                    </li>
+                  <ul
+                    id="genreList"
+                    class="dropdown-menu absolute hidden text-black pt-1"
+                  >
+                    <li class=""></li>
                   </ul>
                 </div>
               </div>
-            </ul>
+            </li>
 
-            <form id="form">
-              <input
-                class="h-[21px] w-[150px] p-1 mr-3 rounded"
-                type="text"
-                placeholder="search"
-                id="search"
-              />
-            </form>
+            <div>
+              <div class="dropdown inline-block relative">
+                <button class="font-semibold inline-flex items-center">
+                  <span class="mr-1">Filter</span>
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </button>
+                <ul class="dropdown-menu absolute hidden pt-1">
+                  <li class="">
+                    <a
+                      class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+                      href="#"
+                      >One</a
+                    >
+                  </li>
+                  <li class="">
+                    <a
+                      class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+                      href="#"
+                      >Two</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </ul>
 
-            <!-- Mobile menu icon -->
-            <button id="mobile-icon" class="md:hidden">
-              <i onclick="changeIcon(this)" class="fa-solid fa-bars"></i>
-            </button>
-          </div>
-        </nav>
-      </header>
+          <form id="form">
+            <input
+              class="h-[21px] w-[150px] p-1 mr-3 rounded"
+              type="text"
+              placeholder="search"
+              id="search"
+            />
+          </form>
+
+          <!-- Mobile menu icon -->
+          <button id="mobile-icon" class="md:hidden">
+            <i onclick="changeIcon(this)" class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
       <div class="movies-container"></div>
     </div>
     <script type="text/javascript" src="script.js"></script>
