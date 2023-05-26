@@ -16,6 +16,11 @@ const autorun = async () => {
   renderMovies(movies.results);
 };
 
+const home = document.querySelector("#home");
+home.addEventListener("click", () => {
+  window.location.reload();
+});
+
 // Don't touch this function please
 const constructUrl = (path) => {
   return `${TMDB_BASE_URL}/${path}?api_key=${"6f4621a95489dc57656a3d8c6fd529a1"}`;
@@ -48,15 +53,13 @@ const fetchActors = async (movieId) => {
   return act.cast;
 };
 
+//Genre Section
 const fetchGenre = async () => {
   const url = constructUrl(`genre/movie/list`);
   const res = await fetch(url);
   const gen = await res.json();
-  // console.log(gen.genres[0].name);
-  return gen.genres;
-};
-const renderGenre = (genres) => {
-  Object.values(genres).map((genre) => {
+
+  gen.genres.forEach((genre) => {
     const genreDiv = document.createElement("li");
     genreDiv.classList.add("genreContainer");
     genreDiv.innerHTML = `
@@ -66,23 +69,27 @@ const renderGenre = (genres) => {
     >${genre.name}</a
   >
     `;
-    genreDiv.addEventListener("click", () => {
-      renderGenres();
-    });
     genreList.appendChild(genreDiv);
+    genreDiv.addEventListener("click", () => {
+      fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=6f4621a95489dc57656a3d8c6fd529a1&with_genres=${genre.id}`
+      )
+        .then((res) => res.json())
+        .then((data) => data.results)
+        .then((movies) => renderMovies(movies));
+    });
   });
+
+  return gen.genres;
 };
-const genreRun = async () => {
-  const genres = await fetchGenre();
-  renderGenre(genres);
-};
+fetchGenre();
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   let id = 1;
-
-  Object.values(movies).map((movie) => {
-    const movieDiv = document.createElement("div");
+  moviesContainer.innerHTML = "";
+  movies.forEach((movie) => {
+    let movieDiv = document.createElement("div");
     movieDiv.classList.add("movies");
     movieDiv.id = id;
     id++;
@@ -94,20 +101,10 @@ const renderMovies = (movies) => {
     movieDiv.addEventListener("click", () => {
       movieDetails(movie, movie.id);
     });
+    console.log(movieDiv);
+
     moviesContainer.appendChild(movieDiv);
   });
-};
-const renderGenres = (genres) => {
-  for (let i = 1; i < 21; i++) {
-    const genreId = document.getElementById(i);
-    //     genreId.innerHTML = `
-    // <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
-    //       movie.title
-    //     } poster">
-    //         <h3>${movie.title}</h3>
-    //     `;
-    console.log(genreId);
-  }
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
@@ -177,4 +174,3 @@ const renderMovie = (movie, actors) => {
 // });
 
 document.addEventListener("DOMContentLoaded", autorun);
-document.addEventListener("DOMContentLoaded", genreRun);
