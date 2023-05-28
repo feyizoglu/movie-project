@@ -84,6 +84,19 @@ const fetchGenre = async () => {
 };
 fetchGenre();
 
+// Filter Section
+const filterPopular = document.querySelectorAll(".filter");
+filterPopular.forEach((filter) => {
+  filter.addEventListener("click", () => {
+    fetch(
+      `https://api.themoviedb.org/3/movie/${filter.id}?api_key=6f4621a95489dc57656a3d8c6fd529a1`
+    )
+      .then((res) => res.json())
+      .then((data) => data.results)
+      .then((movies) => renderMovies(movies));
+  });
+});
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   let id = 1;
@@ -101,7 +114,6 @@ const renderMovies = (movies) => {
     movieDiv.addEventListener("click", () => {
       movieDetails(movie, movie.id);
     });
-    console.log(movieDiv);
 
     moviesContainer.appendChild(movieDiv);
   });
