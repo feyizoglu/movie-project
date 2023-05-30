@@ -3,9 +3,11 @@
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
-// const searchURL =
-//   TMDB_BASE_URL + "/search/movie?" + "6f4621a95489dc57656a3d8c6fd529a1";
-const CONTAINER = document.querySelector(".container");
+const API_KEY = "api_key=6f4621a95489dc57656a3d8c6fd529a1";
+const API_URL =
+  TMDB_BASE_URL + "/discover/movie?sort_by=now_playing.desc&" + API_KEY;
+const searchURL = TMDB_BASE_URL + "/search/movie?" + API_KEY;
+const CONTAINER = document.querySelector(".containerDiv");
 const moviesContainer = document.querySelector(".movies-container");
 const form = document.getElementById("form");
 const search = document.getElementById("search");
@@ -107,10 +109,11 @@ const renderMovies = (movies) => {
     movieDiv.id = id;
     id++;
     movieDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
+        <img class="mt-5" src="${BACKDROP_BASE_URL + movie.poster_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.title}</h3>`;
+        <h3 class="mt-5">${movie.title}</h3>`;
+
     movieDiv.addEventListener("click", () => {
       movieDetails(movie, movie.id);
     });
@@ -130,49 +133,84 @@ const renderMovie = (movie, actors) => {
              }>
         </div>
         <div class="col-md-8 text-center p-6">
-            <h2 id="movie-title">${movie.title}</h2>
+            <h2 class="text-3xl mb-5">${movie.title}</h2>
             <p id="movie-release-date"><b>Release Date:</b> ${
               movie.release_date
             }</p>
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3 class="mt-3 mb-3">Overview:</h3>
+            <h3 class="mt-3 mb-3 text-2xl">Overview:</h3>
             <p id="movie-overview" class="m-auto max-w-5xl">${
               movie.overview
             }</p>
         </div>
         <div >
-            <h3 class="text-center mb-5" >Actors</h3>
+            <h3 class="text-center mb-5 text-3xl" >Actors</h3>
             <ul id="actors" class="list-unstyled flex items-center justify-center w-full">
             <li>
 
-  <div id="card" class="relative  text-white overflow-hidden cursor-pointer transition-all duration-500" style="transition: 0.6s;transform-style: preserve-3d;">
 
-    <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center bg-gradient-to-tr from-orange-200 to-orange-400 transition-all duration-100 delay-200 z-20" style="transform: rotateY(0deg);">
 
-        <div class="flex items-center justify-center ">
+        <div class="flex items-center justify-center w-full ">
+        <div class="flex flex-col items-center justify-center ">
         <img src="${PROFILE_BASE_URL}/${actors[0].profile_path}"
         alt="" class="actor-img" >
+        <h5 class ="text-center text-xl">${actors[0].name}</h5>
         </div>
-    </div>
 
-    <div class="absolute top-0 left-0 w-full h-full flex flex-col gap-3 justify-center bg-gradient-to-tr from-orange-900 to-orange-700 transition-all z-10"
-         style="transform: rotateY(180deg);">
-            <h1 class ="text-center text-3xl">${actors[0].name}</h1>
-            <button class ="text-center text-xl p-1 bg-black">More</button>
-      </div>
+        <div class="flex flex-col items-center justify-center ">
+        <img src="${PROFILE_BASE_URL}/${actors[1].profile_path}"
+        alt="" class="actor-img" >
+        <h5 class ="text-center text-xl">${actors[1].name}</h5>
+        </div>
 
-    </div>
+        <div class="flex flex-col items-center justify-center ">
+        <img src="${PROFILE_BASE_URL}/${actors[2].profile_path}"
+        alt="" class="actor-img" >
+        <h5 class ="text-center text-xl">${actors[2].name}</h5>
+
+        </div>
+
+        <div class="flex flex-col items-center justify-center ">
+        <img src="${PROFILE_BASE_URL}/${actors[3].profile_path}"
+        alt="" class="actor-img" >
+        <h5 class ="text-center text-xl">${actors[3].name}</h5>
+
+        </div>
+
+        <div class="flex flex-col items-center justify-center ">
+        <img src="${PROFILE_BASE_URL}/${actors[4].profile_path}"
+        alt="" class="actor-img" >
+        <h5 class ="text-center text-xl">${actors[4].name}</h5>
+
+        </div>
+        </div>
+
+        
   </div>
 
           </li>
-            <li>${actors[1].name}</li>
-            <li>${actors[2].name}</li>
-            <li>${actors[3].name}</li>
-            <li>${actors[4].name}</li>
+            
             </ul>
             </div>
     </div>`;
 };
+
+const fetchSearchMovies = async (url) => {
+  const res = await fetch(url);
+  const sea = await res.json();
+  if (sea.results) {
+    renderMovies(sea.results);
+  }
+};
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const searchTerm = search.value;
+  console.log(searchTerm);
+  if (searchTerm) {
+    fetchSearchMovies(searchURL + "&query=" + searchTerm);
+  }
+});
 
 // ${PROFILE_BASE_URL}/${actors[0].profile_path}
 // form.addEventListener("submit", (e) => {
