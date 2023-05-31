@@ -1,5 +1,4 @@
 "use strict";
-
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
@@ -66,7 +65,7 @@ const fetchGenre = async () => {
     genreDiv.classList.add("genreContainer");
     genreDiv.innerHTML = `
     <a
-    class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white"
+    class="rounded hover:bg-red-400 px-4 block whitespace-no-wrap text-white "
     href="#"
     >${genre.name}</a
   >
@@ -112,6 +111,8 @@ const renderMovies = (movies) => {
         <img class="mt-5" src="${BACKDROP_BASE_URL + movie.poster_path}" alt="${
       movie.title
     } poster">
+    <img src="${BACKDROP_BASE_URL + movie.backdrop_path}">
+   
         <h3 class="mt-5">${movie.title}</h3>`;
 
     movieDiv.addEventListener("click", () => {
@@ -122,9 +123,56 @@ const renderMovies = (movies) => {
   });
 };
 
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
+const fetchAllActors = async () => {
+  const url = constructUrl("person/popular");
+  const res = await fetch(url);
+  const act = await res.json();
+  // console.log(act.results.know_for);
+  return act;
+};
+fetchAllActors();
+const movieGR = async () => {
+  const actors = await fetchAllActors();
+  renderActors(actors.results);
+};
+
+const renderActors = (actors) => {
+  let id = 1;
+  moviesContainer.innerHTML = "";
+  actors.forEach((actor) => {
+    let actorsDiv = document.createElement("div");
+    actorsDiv.classList.add("actors");
+    actorsDiv.id = id;
+    id++;
+    actorsDiv.innerHTML = `
+        <img class="mt-5 actorBlur" src="${
+          BACKDROP_BASE_URL + actor.profile_path
+        }" alt="${actor.title} poster">
+        <div class="actorsMov">
+        <img src="${BACKDROP_BASE_URL + actor.known_for[0].backdrop_path}">
+    <img src="${BACKDROP_BASE_URL + actor.known_for[1].backdrop_path}">
+    <img src="${BACKDROP_BASE_URL + actor.known_for[2].backdrop_path}">
+    </div>
+    
+   
+        <h3 class="mt-5 text-xl">${actor.name}</h3>`;
+
+    moviesContainer.appendChild(actorsDiv);
+  });
+};
+let actorsDiv = document.querySelector("#actorsDiv");
+actorsDiv.addEventListener("click", movieGR);
+
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie, actors) => {
-  console.log(movie);
   CONTAINER.innerHTML = `
     <div class="row text-white">
         <div class="col-md-4 flex items-center justify-center mt-5">
@@ -133,54 +181,54 @@ const renderMovie = (movie, actors) => {
              }>
         </div>
         <div class="col-md-8 text-center p-6">
-            <h2 class="text-3xl mb-5">${movie.title}</h2>
-            <p id="movie-release-date"><b>Release Date:</b> ${
+            <h2 class="text-5xl mb-10">${movie.title}</h2>
+            <p id="movie-release-date" class="mb-2"><b>Release Date:</b> ${
               movie.release_date
             }</p>
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3 class="mt-3 mb-3 text-2xl">Overview:</h3>
-            <p id="movie-overview" class="m-auto max-w-5xl">${
+            <h3 class="mt-5 mb-5 text-3xl">Overview:</h3>
+            <p id="movie-overview" class="text-xl m-auto max-w-5xl">${
               movie.overview
             }</p>
         </div>
         <div >
-            <h3 class="text-center mb-5 text-3xl" >Actors</h3>
+            <h3 class="text-center mb-5 mt-5 text-3xl" >Actors</h3>
             <ul id="actors" class="list-unstyled flex items-center justify-center w-full">
             <li>
 
 
 
-        <div class="flex items-center justify-center w-full ">
+        <div class="flex items-center justify-center w-full mt-5 mb-10 gap-20">
         <div class="flex flex-col items-center justify-center ">
-        <img src="${PROFILE_BASE_URL}/${actors[0].profile_path}"
+        <img  src="${PROFILE_BASE_URL}/${actors[0].profile_path}"
         alt="" class="actor-img" >
-        <h5 class ="text-center text-xl">${actors[0].name}</h5>
+        <h5 class ="text-center text-xl mt-2">${actors[0].name}</h5>
         </div>
 
         <div class="flex flex-col items-center justify-center ">
-        <img src="${PROFILE_BASE_URL}/${actors[1].profile_path}"
+        <img  src="${PROFILE_BASE_URL}/${actors[1].profile_path}"
         alt="" class="actor-img" >
-        <h5 class ="text-center text-xl">${actors[1].name}</h5>
+        <h5 class ="text-center text-xl mt-2">${actors[1].name}</h5>
         </div>
 
         <div class="flex flex-col items-center justify-center ">
-        <img src="${PROFILE_BASE_URL}/${actors[2].profile_path}"
+        <img  src="${PROFILE_BASE_URL}/${actors[2].profile_path}"
         alt="" class="actor-img" >
-        <h5 class ="text-center text-xl">${actors[2].name}</h5>
-
-        </div>
-
-        <div class="flex flex-col items-center justify-center ">
-        <img src="${PROFILE_BASE_URL}/${actors[3].profile_path}"
-        alt="" class="actor-img" >
-        <h5 class ="text-center text-xl">${actors[3].name}</h5>
+        <h5 class ="text-center text-xl mt-2">${actors[2].name}</h5>
 
         </div>
 
         <div class="flex flex-col items-center justify-center ">
-        <img src="${PROFILE_BASE_URL}/${actors[4].profile_path}"
+        <img  src="${PROFILE_BASE_URL}/${actors[3].profile_path}"
         alt="" class="actor-img" >
-        <h5 class ="text-center text-xl">${actors[4].name}</h5>
+        <h5 class ="text-center text-xl mt-2">${actors[3].name}</h5>
+
+        </div>
+
+        <div class="flex flex-col items-center justify-center ">
+        <img  src="${PROFILE_BASE_URL}/${actors[4].profile_path}"
+        alt="" class="actor-img" >
+        <h5 class ="text-center text-xl mt-2">${actors[4].name}</h5>
 
         </div>
         </div>
@@ -211,16 +259,5 @@ form.addEventListener("submit", (e) => {
     fetchSearchMovies(searchURL + "&query=" + searchTerm);
   }
 });
-
-// ${PROFILE_BASE_URL}/${actors[0].profile_path}
-// form.addEventListener("submit", (e) => {
-//   e.preventDefault();
-
-//   const searchTerm = search.value;
-
-//   if (searchTerm) {
-//     renderMovies(searchURL + "&query=" + searchTerm);
-//   }
-// });
 
 document.addEventListener("DOMContentLoaded", autorun);

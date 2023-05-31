@@ -10,24 +10,25 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <title>GTGH</title>
   </head>
 
   <body>
     <header class="h-20">
-      <nav class="relative px-2 py-4">
+      <nav class="relative px-2 py-4 ">
         <div class="mx-auto flex justify-between items-center">
           <img class="logo" src="./img/logo.png" alt="Tailwindcss Navigation" />
 
-          <ul class="hidden md:flex space-x-10 font-semibold text-white">
-            <li id="home" class="text-center"><a href="#">Home</a></li>
-            <li><a href="#">Actors</a></li>
+          <ul class="hidden md:flex space-x-10 font-semibold text-white ">
+            <li id="home" class="text-center text-xl"><a href="#">Home</a></li>
+            <li class="text-xl"><a id="actorsDiv" href="#">Actors</a></li>
             <li>
               <div>
                 <div class="dropdown inline-block relative">
                   <button class="font-semibold inline-flex items-center">
-                    <span class="mr-1">Genre</span>
+                    <span class="mr-1 text-xl">Genre</span>
                     <svg
                       class="fill-current h-4 w-4"
                       xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +52,7 @@
             <div>
               <div class="dropdown inline-block relative">
                 <button class="font-semibold inline-flex items-center">
-                  <span class="mr-1">Filter</span>
+                  <span class="mr-1 text-xl">Filter</span>
                   <svg
                     class="fill-current h-4 w-4"
                     xmlns="http://www.w3.org/2000/svg"

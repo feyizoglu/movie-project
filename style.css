@@ -11,7 +11,7 @@
   width: 120px;
 }
 body {
-  background: url(./img/bg.jpg) center center/cover no-repeat;
+  background: url(./img/bg2.jpg) center center/cover no-repeat;
   position: relative;
   font-family: "Poppins", sans-serif;
 }
@@ -26,6 +26,9 @@ body::after {
   opacity: 0.5;
   z-index: -1;
 }
+nav {
+  z-index: 100;
+}
 
 .containerDiv {
   height: 100%;
@@ -36,7 +39,70 @@ body::after {
   display: flex;
   flex-direction: column;
   text-align: center;
+  position: relative;
+  cursor: pointer;
+  margin: 2rem;
+  transition: all 0.3s;
+  contain: layout;
 }
+.movies:hover {
+  transform: perspective(250px) rotateX(10deg) translateY(-5%);
+  box-shadow: 0 0 40px 20px #fff, 0 0 100px 50px rgb(156, 156, 156);
+  transition: box-shadow 4s ease-out;
+  animation: spin 16s linear infinite;
+  border-radius: 10px;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.movies::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 10%,
+    rgb(0 0 0 / 0.5) 50%,
+    black 95%
+  );
+  transition: all 0.3s;
+  opacity: 0;
+}
+.movies img:nth-child(1) {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.movies:hover img:nth-child(1) {
+  filter: blur(10px);
+}
+
+.movies img:nth-child(2) {
+  z-index: 1;
+  height: 300px;
+  width: 100%;
+}
+
+.movies img:nth-child(2) {
+  position: absolute;
+  right: 0;
+  bottom: 100px;
+  left: 0;
+  margin: auto;
+  width: 75%;
+  transform: translateY(25%);
+  transition: all 0.3s;
+  opacity: 0;
+}
+.movies:hover img:nth-child(2) {
+  transform: scale(1.05) translateY(10%);
+  opacity: 1;
+}
+
 .movies img {
   height: 100%;
   width: 90%;
@@ -44,10 +110,9 @@ body::after {
   border-radius: 60px;
   cursor: pointer;
   transition: all 0.5s ease;
+  display: block;
 }
-.movies img:hover {
-  scale: 1.05;
-}
+
 .movies-container {
   height: 100%;
   width: 100%;
@@ -56,6 +121,90 @@ body::after {
   grid-template-rows: repeat(5, 1fr);
   gap: 2rem;
   color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+/**/
+
+.actors {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s;
+  contain: layout;
+}
+.actors:hover {
+  box-shadow: 0 0 20px 10px #fff;
+  transition: box-shadow 1s ease-out;
+  border-radius: 10px;
+}
+.actors:hover .actorBlur {
+  filter: blur(20px);
+}
+
+.actors::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 90%;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 10%,
+    #5c8984c0 50%,
+    #5c8984c0 95%
+  );
+  transition: all 0.3s;
+  z-index: -1;
+  opacity: 0.2;
+  border-radius: 20px;
+}
+
+.actors .actorsMov {
+  position: absolute;
+  right: 0;
+  top: 200px;
+  left: 0;
+  margin: auto;
+  width: 75%;
+  transform: translateY(25%);
+  transition: all 0.3s;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 170px;
+  gap: 1rem;
+}
+.actors:hover .actorsMov {
+  transform: scale(1.05) translateY(10%);
+  opacity: 1;
+}
+
+.actors img {
+  height: 100%;
+  width: 90%;
+  margin: auto;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  display: block;
+}
+
+.actors-container {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 2rem;
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
 }
 #card {
   height: 200px;
@@ -75,12 +224,39 @@ body::after {
   scale: 1.05;
 }
 #movie-backdrop {
-  height: 360px;
-  width: 60%;
+  height: 350px;
+  width: 50%;
   margin: auto;
+  margin-top: 5rem;
   border-radius: 10px;
+  background-image: radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%),
+    radial-gradient(transparent 65%, #fff7 70%, transparent 75%);
+
+  box-shadow: inset 0 -20px 20px -10px #fff, inset 0 0 10px #fff,
+    inset 0 0 25px #fff, inset 0 0 100px rgb(133, 133, 133),
+    inset 0 0 20px rgb(255, 255, 255), 0 0 3px #fff, 0 0 20px rgb(117, 117, 117),
+    0 0 100px #5c8984c0, 0 0 35px rgb(255, 255, 255);
 }
+.actor-img {
+  background-image: radial-gradient(
+    transparent 65%,
+    #ff0000 90%,
+    transparent 100%
+  );
+
+  box-shadow: inset 0 -20px 20px -10px #000, inset 0 0 10px #000,
+    inset 0 0 25px #000, inset 0 0 100px #000, inset 0 0 20px #000, 0 0 3px #000,
+    0 0 20px #000, 0 0 100px #5c8984c0, 0 0 35px #000;
+}
+
 .dropdown-menu {
-  background: rgba(36, 0, 0, 0.685);
+  background: rgba(63, 63, 63, 0.685);
   border-radius: 20px;
 }
