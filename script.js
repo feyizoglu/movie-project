@@ -31,7 +31,9 @@ const constructUrl = (path) => {
 const movieDetails = async (movie, actors) => {
   const movieRes = await fetchMovie(movie.id);
   const actorRes = await fetchActors(actors);
-  renderMovie(movieRes, actorRes);
+  const similarMovies = await fetchRelatedMovies(movie.id);
+  const trailers = await fetchTrailers(movie.id);
+  renderMovie(movieRes, actorRes, similarMovies, trailers);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -47,11 +49,29 @@ const fetchMovie = async (movieId) => {
   const res = await fetch(url);
   return res.json();
 };
+
 const fetchActors = async (movieId) => {
   const url = constructUrl(`movie/${movieId}/credits`);
   const res = await fetch(url);
   const act = await res.json();
   return act.cast;
+};
+// Fetch Similar Movies
+
+const fetchRelatedMovies = async (movie_id) => {
+  const url = constructUrl(`movie/${movie_id}/similar`);
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.results;
+};
+
+// Fetch Trailers
+
+const fetchTrailers = async (movie_id) => {
+  const url = constructUrl(`movie/${movie_id}/videos`);
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
 };
 
 //Genre Section
@@ -123,19 +143,16 @@ const renderMovies = (movies) => {
   });
 };
 
-////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
+// Fetch All Actors
 
 const fetchAllActors = async () => {
   const url = constructUrl("person/popular");
   const res = await fetch(url);
   const act = await res.json();
-  // console.log(act.results.know_for);
   return act;
 };
 fetchAllActors();
-const movieGR = async () => {
+const movieActors = async () => {
   const actors = await fetchAllActors();
   renderActors(actors.results);
 };
@@ -165,14 +182,11 @@ const renderActors = (actors) => {
   });
 };
 let actorsDiv = document.querySelector("#actorsDiv");
-actorsDiv.addEventListener("click", movieGR);
-
-////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
+actorsDiv.addEventListener("click", movieActors);
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie, actors) => {
+
+const renderMovie = async (movie, actors, similar, trailer) => {
   CONTAINER.innerHTML = `
     <div class="row text-white">
         <div class="col-md-4 flex items-center justify-center mt-5">
@@ -186,13 +200,19 @@ const renderMovie = (movie, actors) => {
               movie.release_date
             }</p>
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3 class="mt-5 mb-5 text-3xl">Overview:</h3>
-            <p id="movie-overview" class="text-xl m-auto max-w-5xl">${
-              movie.overview
-            }</p>
+            <h3 class="headersSec">Overview</h3>
+            <p  class="text-xl m-auto max-w-5xl">${movie.overview}</p>
         </div>
         <div >
-            <h3 class="text-center mb-5 mt-5 text-3xl" >Actors</h3>
+      <h3 class="headersSec text-center">Trailer</h3>
+      <div class="movie-trailer">
+        <iframe class="trailerVideo" src="https://www.youtube.com/embed/${
+          trailer.results[0].key
+        }?autoplay=1"></iframe>
+      </div>
+    </div> 
+        <div >
+            <h3 class="headers text-center" >Actors</h3>
             <ul id="actors" class="list-unstyled flex items-center justify-center w-full">
             <li>
 
@@ -233,6 +253,11 @@ const renderMovie = (movie, actors) => {
         </div>
         </div>
 
+        <h3 class="headers text-center">Similar Movies</h3>  
+        <ul class="similarMoviesList mb-10"></ul>
+
+        
+
         
   </div>
 
@@ -241,7 +266,30 @@ const renderMovie = (movie, actors) => {
             </ul>
             </div>
     </div>`;
+
+  renderSimilarMov(similar);
 };
+// render similar Movies
+
+const renderSimilarMov = (similarMovies) => {
+  const similarList = document.querySelector(".similarMoviesList");
+  similarMovies.slice(0, 5).map((movie) => {
+    const movieSec = document.createElement("li");
+    movieSec.innerHTML = `
+    <li class="list-group-item m-2">
+    <img class="similar-movie-img" src="${
+      BACKDROP_BASE_URL + movie.backdrop_path
+    }"><h5 class="text-center mt-5 text-xl">${movie.title}</h5>     
+      </li>
+    `;
+    similarList.appendChild(movieSec);
+    movieSec.addEventListener("click", () => {
+      movieDetails(movie);
+    });
+  });
+};
+
+// Fetch Search Movie
 
 const fetchSearchMovies = async (url) => {
   const res = await fetch(url);

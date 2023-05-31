@@ -142,7 +142,7 @@ nav {
   border-radius: 10px;
 }
 .actors:hover .actorBlur {
-  filter: blur(20px);
+  filter: blur(10px);
 }
 
 .actors::before {
@@ -164,20 +164,15 @@ nav {
 }
 
 .actors .actorsMov {
-  position: absolute;
-  right: 0;
-  top: 200px;
-  left: 0;
   margin: auto;
-  width: 75%;
   transform: translateY(25%);
   transition: all 0.3s;
   opacity: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 170px;
+  height: 120px;
+  width: 120px;
   gap: 1rem;
 }
 .actors:hover .actorsMov {
@@ -259,4 +254,34 @@ nav {
 .dropdown-menu {
   background: rgba(63, 63, 63, 0.685);
   border-radius: 20px;
+}
+
+.similarMoviesList {
+  display: flex;
+  margin-top: 4rem;
+}
+.similar-movie-img {
+  cursor: pointer;
+  border-radius: 50px;
+}
+.headers {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  font-size: 3rem;
+  color: rgb(1, 194, 194);
+}
+.headersSec {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  font-size: 3rem;
+  color: rgb(1, 194, 194);
+}
+.movie-trailer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trailerVideo {
+  height: 430px;
+  width: 740px;
 }
