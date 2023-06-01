@@ -174,13 +174,104 @@ const renderActors = (actors) => {
     <img src="${BACKDROP_BASE_URL + actor.known_for[1].backdrop_path}">
     <img src="${BACKDROP_BASE_URL + actor.known_for[2].backdrop_path}">
     </div>
-    
-   
         <h3 class="mt-5 text-xl">${actor.name}</h3>`;
-
+    actorsDiv.addEventListener("click", () => {
+      renderActor(actor);
+      console.log(actor);
+    });
     moviesContainer.appendChild(actorsDiv);
   });
 };
+
+// fetching actors' details
+const fetchActorDetails = async (actor) => {
+  const url = constructUrl(`person/${actor}`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const actorDetails = async (actor) => {
+  const actorRes = await fetchActorDetails(actor.id);
+  return actorRes;
+};
+
+const fetchActorRelatedMovies = async (actor) => {
+  const url = constructUrl(`person/${actor}/combined_credits`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const actorRelatedMovieDetails = async (actor) => {
+  const actorRelatedMoviesRes = await fetchActorRelatedMovies(actor.id);
+  return actorRelatedMoviesRes;
+};
+
+const renderActor = async (actor) => {
+  actor = await actorDetails(actor);
+  let movies = await fetchActorRelatedMovies(actor.id);
+  let slicedMovies = movies.cast.splice(0, 5);
+  let gender;
+  if (actor.gender === 1) {
+    gender = "Female";
+  } else if (actor.gender === 2) {
+    gender = "Male";
+  }
+  CONTAINER.innerHTML = `
+    <div class="row text-white">
+        <div class="flex flex-col space-y-2 items-center text-center text-xl">
+             <img width='200' height='200' class="rounded-full shadow-xl shadow-slate-900 mx-auto" src=${
+               BACKDROP_BASE_URL + actor.profile_path
+             } alt='${actor.name}'>
+             <h3 id="movie-release-date" class='text-6xl py-2 font-bold'><b>${
+               actor.name
+             }</b></h3>
+             <div class='flex space-x-3 justify-center'>
+              <h3 class='font-bold'>Gender</h3>
+              <p class='text-slate-400'>${gender}</p>
+             </div>
+
+
+             <div class='flex space-x-3 justify-center'>
+              <h3 class='font-bold'>Popularity</h3>
+              <p class='text-slate-400'>${actor.popularity}</p>
+             </div>
+
+             <div class='flex space-x-3 justify-center'>
+              <h3 class='font-bold'>Birthday</h3>
+              <p class='text-slate-400'>${actor.birthday}</p>
+             </div>
+
+             <div class="deathday"></div>
+
+             <div class='flex space-x-3 justify-center'>
+              <h3 class='font-bold'>Place of Birth</h3>
+              <p class='text-slate-400'>${actor.place_of_birth}</p>
+             </div>
+
+             <div class='flex space-x-3 justify-center w-1/2 '>
+              <h3 class='font-bold'>Biography</h3>
+              <p class='text-slate-400'>${actor.biography}</p>
+             </div>
+             <h3 class='text-3xl font-bold py-3'>Related Movies</h3>
+            <ul class="similarMoviesList mb-10">
+            ${slicedMovies.map(
+              (movie) => `
+            <li class="simMovie list-group-item m-2">
+            <img class="similar-movie-img" src="${
+              BACKDROP_BASE_URL + movie.backdrop_path
+            }"><h5 class="text-center mt-5 text-xl">${movie.title}</h5>     
+            </li>
+    `
+            )}`;
+  const similarList = document.querySelectorAll(".simMovie");
+  console.log(similarList);
+  similarList.forEach((movie, index) => {
+    movie.addEventListener("click", () => {
+      movieDetails(slicedMovies[index], slicedMovies[index].id);
+    });
+  });
+};
+
 let actorsDiv = document.querySelector("#actorsDiv");
 actorsDiv.addEventListener("click", movieActors);
 
@@ -213,60 +304,35 @@ const renderMovie = async (movie, actors, similar, trailer) => {
     </div> 
         <div >
             <h3 class="headers text-center" >Actors</h3>
-            <ul id="actors" class="list-unstyled flex items-center justify-center w-full">
-            <li>
+        <ul id="actors" class="list-unstyled flex items-center justify-center w-full mt-5 mb-10 gap-20">
 
-
-
-        <div class="flex items-center justify-center w-full mt-5 mb-10 gap-20">
-        <div class="flex flex-col items-center justify-center ">
-        <img  src="${PROFILE_BASE_URL}/${actors[0].profile_path}"
-        alt="" class="actor-img" >
-        <h5 class ="text-center text-xl mt-2">${actors[0].name}</h5>
-        </div>
-
-        <div class="flex flex-col items-center justify-center ">
-        <img  src="${PROFILE_BASE_URL}/${actors[1].profile_path}"
-        alt="" class="actor-img" >
-        <h5 class ="text-center text-xl mt-2">${actors[1].name}</h5>
-        </div>
-
-        <div class="flex flex-col items-center justify-center ">
-        <img  src="${PROFILE_BASE_URL}/${actors[2].profile_path}"
-        alt="" class="actor-img" >
-        <h5 class ="text-center text-xl mt-2">${actors[2].name}</h5>
 
         </div>
-
-        <div class="flex flex-col items-center justify-center ">
-        <img  src="${PROFILE_BASE_URL}/${actors[3].profile_path}"
-        alt="" class="actor-img" >
-        <h5 class ="text-center text-xl mt-2">${actors[3].name}</h5>
-
-        </div>
-
-        <div class="flex flex-col items-center justify-center ">
-        <img  src="${PROFILE_BASE_URL}/${actors[4].profile_path}"
-        alt="" class="actor-img" >
-        <h5 class ="text-center text-xl mt-2">${actors[4].name}</h5>
-
-        </div>
-        </div>
-
+        
         <h3 class="headers text-center">Similar Movies</h3>  
-        <ul class="similarMoviesList mb-10"></ul>
-
-        
-
-        
+        <ul class="similarMoviesList mb-10"></ul>  
   </div>
-
           </li>
-            
             </ul>
             </div>
     </div>`;
-
+  const actorsList = document.querySelector("#actors");
+  for (let i = 0; i < 5; i++) {
+    const li = document.createElement("li");
+    li.id = actors[i].name;
+    li.classList = `flex flex-row items-center justify-center actors5`;
+    li.innerHTML = `<img  src="${PROFILE_BASE_URL}/${actors[i].profile_path}"
+      alt="" class="actor-img" >
+      <h5 class ="text-center text-xl mt-2">${actors[i].name}</h5>`;
+    actorsList.appendChild(li);
+  }
+  const actorsListEvent = document.querySelectorAll(".actors5");
+  actorsListEvent.forEach((actor) => {
+    actor.addEventListener("click", () => {
+      renderActor(actor.id);
+      console.log(actor.id);
+    });
+  });
   renderSimilarMov(similar);
 };
 // render similar Movies
@@ -284,7 +350,7 @@ const renderSimilarMov = (similarMovies) => {
     `;
     similarList.appendChild(movieSec);
     movieSec.addEventListener("click", () => {
-      movieDetails(movie);
+      movieDetails(movie, movie.id);
     });
   });
 };
