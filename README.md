@@ -4,7 +4,7 @@
 
 You can access the live version from the link;
 
-There will be link here
+https://candid-otter-f62028.netlify.app/
 
 ### Description
 
@@ -15,3 +15,5 @@ This project uses The Movie DB API: `https://api.themoviedb.org/3`.
 # What was used?
 
 Using Vanilla JS, CSS, and TailwindCSS, movies from various genres are displayed along with popular actors in the selected movie, related movies to the chosen genre, information about the movie, and its trailer.
+
+![preview](./pre.gif)
