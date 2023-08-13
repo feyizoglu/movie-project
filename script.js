@@ -11,7 +11,7 @@ const moviesContainer = document.querySelector(".movies-container");
 const form = document.getElementById("form");
 const search = document.getElementById("search");
 const genreList = document.querySelector("#genreList");
-// Don't touch this function please
+
 const autorun = async () => {
   const movies = await fetchMovies();
   renderMovies(movies.results);
@@ -22,12 +22,10 @@ home.addEventListener("click", () => {
   window.location.reload();
 });
 
-// Don't touch this function please
 const constructUrl = (path) => {
   return `${TMDB_BASE_URL}/${path}?api_key=${"6f4621a95489dc57656a3d8c6fd529a1"}`;
 };
 
-// You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie, actors) => {
   const movieRes = await fetchMovie(movie.id);
   const actorRes = await fetchActors(actors);
@@ -36,14 +34,12 @@ const movieDetails = async (movie, actors) => {
   renderMovie(movieRes, actorRes, similarMovies, trailers);
 };
 
-// This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
   const res = await fetch(url);
   return res.json();
 };
 
-// Don't touch this function please. This function is to fetch one movie.
 const fetchMovie = async (movieId) => {
   const url = constructUrl(`movie/${movieId}`);
   const res = await fetch(url);
@@ -56,8 +52,8 @@ const fetchActors = async (movieId) => {
   const act = await res.json();
   return act.cast;
 };
-// Fetch Similar Movies
 
+// Fetch Similar Movies
 const fetchRelatedMovies = async (movie_id) => {
   const url = constructUrl(`movie/${movie_id}/similar`);
   const res = await fetch(url);
@@ -66,7 +62,6 @@ const fetchRelatedMovies = async (movie_id) => {
 };
 
 // Fetch Trailers
-
 const fetchTrailers = async (movie_id) => {
   const url = constructUrl(`movie/${movie_id}/videos`);
   const res = await fetch(url);
@@ -118,7 +113,6 @@ filterPopular.forEach((filter) => {
   });
 });
 
-// You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   let id = 1;
   moviesContainer.innerHTML = "";
@@ -144,7 +138,6 @@ const renderMovies = (movies) => {
 };
 
 // Fetch All Actors
-
 const fetchAllActors = async () => {
   const url = constructUrl("person/popular");
   const res = await fetch(url);
@@ -275,8 +268,6 @@ const renderActor = async (actor) => {
 let actorsDiv = document.querySelector("#actorsDiv");
 actorsDiv.addEventListener("click", movieActors);
 
-// You'll need to play with this function in order to add features and enhance the style.
-
 const renderMovie = async (movie, actors, similar, trailer) => {
   CONTAINER.innerHTML = `
     <div class="row text-white">
@@ -335,8 +326,8 @@ const renderMovie = async (movie, actors, similar, trailer) => {
   });
   renderSimilarMov(similar);
 };
-// render similar Movies
 
+// render similar Movies
 const renderSimilarMov = (similarMovies) => {
   const similarList = document.querySelector(".similarMoviesList");
   similarMovies.slice(0, 5).map((movie) => {
@@ -356,7 +347,6 @@ const renderSimilarMov = (similarMovies) => {
 };
 
 // Fetch Search Movie
-
 const fetchSearchMovies = async (url) => {
   const res = await fetch(url);
   const sea = await res.json();
